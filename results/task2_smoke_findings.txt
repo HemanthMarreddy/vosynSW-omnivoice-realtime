@@ -1,0 +1,195 @@
+    Sprint 53 - Task 2 - OmniVoice Thai Real-Time Feasibility
+
+Model:
+OmniVoice-Streaming fork
+
+Language:
+Thai
+
+Hardware:
+GCP n2-highmem-8
+8 vCPU
+64 GB RAM
+CPU only
+
+Smoke Test:
+PASS
+
+Model Generation:
+PASS
+
+Chunked Generation:
+PASS
+
+Current RTF:
+Approximately 5.2
+
+Real-Time Status:
+NOT REAL-TIME on current CPU configuration.
+
+Quality:
+Full-sentence generation maintains better quality.
+Chunked generation shows some quality degradation.
+
+Voice Consistency:
+NOT STABLE across independently generated chunks.
+Different chunks can switch between male/female voices.
+
+Primary Observation:
+Independent chunk generation does not preserve speaker/voice consistency and
+currently does not achieve real-time performance on the CPU VM.
+
+Next Investigation:
+1. Test whether the streaming fork/server provides better chunk handling.
+2. Test deterministic generation/voice configuration.
+3. Test larger linguistic chunks.
+4. Measure quality-latency trade-off.
+5. Determine whether practical real-time operation is feasible.
+
+
+
+OMNIVOICE THAI TTS — EXPERIMENT RESULTS
+
+1. REAL-TIME FEASIBILITY / SMOKE TEST
+
+Experiment:
+Thai text-to-speech generation using the OmniVoice model.
+
+Sample ID:
+thai_0001
+
+Language:
+Thai
+
+Results:
+
+* Audio duration: 21.170 seconds
+* Generation time: 112.939 seconds
+* Real-Time Factor (RTF): 5.3349
+* Output: outputs/realtime_smoke/thai_0001.wav
+
+Interpretation:
+The model successfully generated the complete Thai audio sample. The measured completion latency was 112.939 seconds for 21.170 seconds of generated audio.
+
+2. THAI TTS SERVER / API TEST
+
+Experiment:
+Thai speech generation through the OmniVoice OpenAI-compatible TTS server endpoint.
+
+Endpoint tested:
+POST /v1/audio/speech
+
+Language:
+Thai
+
+Results:
+
+* Request completed successfully
+* Output audio generated successfully
+* Output format: WAV
+* Output file: outputs/server_thai_test.wav
+* Output file size: approximately 182 KB
+* Curl transfer time: approximately 22 seconds
+* Time spent: approximately 21 seconds
+
+3. SERVER LATENCY TEST
+
+Experiment:
+Thai TTS generation through the server with latency measurement.
+
+Results:
+
+* HTTP request completed in: 26.887 seconds
+* Output size: 111,885 bytes
+* Output format: MP3
+* Output file: outputs/server_latency_test.mp3
+
+Result:
+The server successfully processed the Thai TTS request and returned an audio response.
+
+4. SENTENCE-AWARE CHUNKING TEST
+
+Experiment:
+Thai text was divided into multiple chunks and generated independently to evaluate chunk-level latency and real-time performance.
+
+CHUNK 1
+
+* Audio duration: 1.600 seconds
+* Latency: 9.181 seconds
+* RTF: 5.7384
+* Output: outputs/chunked/chunk_01.wav
+
+CHUNK 2
+
+* Audio duration: 3.730 seconds
+* Latency: 26.793 seconds
+* RTF: 7.1831
+* Output: outputs/chunked/chunk_02.wav
+
+CHUNK 3
+
+* Audio duration: 4.310 seconds
+* Latency: 40.731 seconds
+* RTF: 9.4504
+* Output: outputs/chunked/chunk_03.wav
+
+5. CHUNKING TEST — AGGREGATE RESULTS
+
+Total generated audio duration:
+9.640 seconds
+
+Total chunk generation latency:
+76.705 seconds
+
+Average latency per chunk:
+25.568 seconds
+
+Average chunk audio duration:
+3.213 seconds
+
+Overall RTF across the three chunks:
+Approximately 7.96
+
+Number of chunks:
+3
+
+All three chunks were successfully generated and saved as WAV files.
+
+6. QUALITY CHECK
+
+Thai pronunciation was identified as the primary quality-check criterion.
+
+Quality checks:
+
+* Thai word pronunciation
+* Obvious word substitutions
+* Naturalness and intelligibility of generated Thai speech
+* Audio continuity between generated chunks
+* Comparison of smoke-test, real-time, and chunked outputs
+
+Audio files available for qualitative evaluation:
+
+* outputs/smoke_test.wav
+* outputs/realtime_smoke/*.wav
+* outputs/chunked/*.wav
+
+OVERALL EXPERIMENT SUMMARY
+
+The OmniVoice Thai TTS system successfully generated Thai speech through both direct model generation and the OpenAI-compatible server API.
+
+Key measured results:
+
+* Direct model generation: 21.170 s audio generated in 112.939 s
+* Direct generation RTF: 5.3349
+* Server API test: approximately 22 s request completion
+* Server latency test: 26.887 s
+* Chunked generation: 3 chunks successfully generated
+* Chunk durations: 1.600 s, 3.730 s, and 4.310 s
+* Chunk latencies: 9.181 s, 26.793 s, and 40.731 s
+* Chunk RTFs: 5.7384, 7.1831, and 9.4504
+* Total chunked audio: 9.640 s
+* Total chunk generation latency: 76.705 s
+* Overall chunked RTF: approximately 7.96
+
+All tested Thai TTS generation paths produced valid audio outputs.
+

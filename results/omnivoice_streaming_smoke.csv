@@ -1,0 +1,2 @@
+model,language,test,sample,ttfa_sec,latency_sec,audio_duration_sec,rtf,cer,quality_observation,status
+OmniVoice-Streaming,Thai,chunked_smoke,smoke_001,,,,,,,
